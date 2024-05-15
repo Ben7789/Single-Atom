@@ -47,36 +47,7 @@ Fcheck = 0
 solution = solve_ivp(odes, t_span, initial_conditions, t_eval=t, atol = 0.0000000000000000000000000000000000000000000000001)
 c1_numerical, cr_numerical, c11_numerical, c1r_numerical, cr1_numerical, crr_numerical = solution.y
 F = fidcheck(c1_numerical, c11_numerical)
-"""
-while F < 0.65:
-    V = V + 0.01
-    solutioncheck = solve_ivp(odes, t_span, initial_conditions, t_eval=t)
-    c1_numericalc, cr_numericalc, c11_numericalc, c1r_numericalc, cr1_numericalc, crr_numericalc = solutioncheck.y
-    Fcheck = fidcheck(c1_numericalc, c11_numericalc)
-    if Fcheck < F:
-        V = V - 0.02
-        solutioncheck = solve_ivp(odes, t_span, initial_conditions, t_eval=t)
-        c1_numericalc, cr_numericalc, c11_numericalc, c1r_numericalc, cr1_numericalc, crr_numericalc = solutioncheck.y
-        Fcheck = fidcheck(c1_numericalc, c11_numericalc)
-    else:
-        F = Fcheck
-        c1_numerical, cr_numerical, c11_numerical, c1r_numerical, cr1_numerical, crr_numerical = c1_numericalc, cr_numericalc, c11_numericalc, c1r_numericalc, cr1_numericalc, crr_numericalc
-"""
-"""
-while F < 0.75:
-    tau = tau + 1
-    solutioncheck = solve_ivp(odes, t_span, initial_conditions, t_eval=t)
-    c1_numericalc, cr_numericalc, c11_numericalc, c1r_numericalc, cr1_numericalc, crr_numericalc = solutioncheck.y
-    Fcheck = fidcheck(c1_numericalc, c11_numericalc)
-    if Fcheck < F:
-        tau = tau - 2
-        solutioncheck = solve_ivp(odes, t_span, initial_conditions, t_eval=t)
-        c1_numericalc, cr_numericalc, c11_numericalc, c1r_numericalc, cr1_numericalc, crr_numericalc = solutioncheck.y
-        Fcheck = fidcheck(c1_numericalc, c11_numericalc)
-    else:
-        F = Fcheck
-        c1_numerical, cr_numerical, c11_numerical, c1r_numerical, cr1_numerical, crr_numerical = c1_numericalc, cr_numericalc, c11_numericalc, c1r_numericalc, cr1_numericalc, crr_numericalc
-"""
+
 phasec11 = np.angle(c11_numerical)
 phasec1 = np.angle(c1_numerical)
 
@@ -110,7 +81,7 @@ ax1.grid(True)
 ax2.grid(True)
 #plt.savefig(f'graphV={V}.png')
 plt.show()
-
+#plots fidelity and phase
 phaseent = phasec11 - 2*phasec1
 fig2 = plt.figure(figsize=(16, 9))
 plt.plot(t, phaseent)
