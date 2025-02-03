@@ -51,18 +51,18 @@ def worm_algorithm(dimers, grid_size):
     
 
     dimers.append([(dimer[0][0], dimer[0][1]), new_pos])
-    
-    while (new_pos) != (x_start, y_start):
+    t = 0
+    while t <  50:  
+#    while (new_pos) != (x_start, y_start):
         for i, dimer in enumerate(dimers):
             if (new_pos) in dimer:
-                print(new_pos)
-                print(dimer)
                 (x1, y1), (x2, y2) = dimer
                 break
         else:
             return dimers 
-        
-        dimer.remove((new_pos[0], new_pos[1]))
+        print(dimer)
+        print((new_pos[0], new_pos[1]))
+        dimer.remove([new_pos[0], new_pos[1]])
         
         neighbours = [(dimer[0][0] + 1, dimer[0][1]), (dimer[0][0], dimer[0][1] + 1), (dimer[0][0], dimer[0][1] - 1), (dimer[0][0] - 1, dimer[0][1])]
         neighbourscorrect = []
@@ -79,6 +79,7 @@ def worm_algorithm(dimers, grid_size):
             neighbourscorrect.append([x,y])
         new_pos = random.choice(neighbourscorrect)
         dimers.append([(dimer[0][0], dimer[0][1]), new_pos])
+        t = t +1
 
             
             
