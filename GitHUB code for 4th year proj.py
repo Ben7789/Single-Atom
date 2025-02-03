@@ -27,7 +27,7 @@ def worm_algorithm(dimers, grid_size):
     dimers.remove([(x1, y1), (x2, y2)])
     plt.plot(x1, y1, 'bo' )
     plt.plot(x2, y2, 'mo')
-    plt.plot([x1, x2], [y1, y2], color="green", linewidth=3)
+#    plt.plot([x1, x2], [y1, y2], color="green", linewidth=3)
     
     # Choose a new neighbor to move to
     dimer.remove((x_start, y_start))
@@ -37,49 +37,49 @@ def worm_algorithm(dimers, grid_size):
     neighbours.remove((x_start, y_start))
     for x, y in neighbours:
         if x < 0:
-            x = grid_size
-        elif x > grid_size:
+            x = grid_size-1
+        elif x > grid_size-1:
             x = 0
         elif y < 0:
-            y = grid_size
-        elif y > grid_size:
+            y = grid_size-1
+        elif y > grid_size-1:
             y = 0
-        neighbourscorrect.append([x,y])
-
+        neighbourscorrect.append((x,y))
+        
         
     new_pos = random.choice(neighbourscorrect)
     
 
     dimers.append([(dimer[0][0], dimer[0][1]), new_pos])
-    t = 0
-    while t <  50:  
-#    while (new_pos) != (x_start, y_start):
+ 
+    while (new_pos) != (x_start, y_start):
         for i, dimer in enumerate(dimers):
             if (new_pos) in dimer:
                 (x1, y1), (x2, y2) = dimer
                 break
         else:
             return dimers 
-        print(dimer)
-        print((new_pos[0], new_pos[1]))
-        dimer.remove([new_pos[0], new_pos[1]])
+        
+        dimers.remove([(x1, y1), (x2, y2)])
+        dimer.remove((new_pos[0], new_pos[1]))
         
         neighbours = [(dimer[0][0] + 1, dimer[0][1]), (dimer[0][0], dimer[0][1] + 1), (dimer[0][0], dimer[0][1] - 1), (dimer[0][0] - 1, dimer[0][1])]
         neighbourscorrect = []
-        neighbours.remove((new_pos[0], new_pos[1]))
+#        neighbours.remove((new_pos[0], new_pos[1]))
         for x, y in neighbours:
             if x < 0:
-                x = grid_size
-            elif x > grid_size:
+                x = grid_size -1
+            elif x > grid_size -1:
                 x = 0
             elif y < 0:
-                y = grid_size
-            elif y > grid_size:
+                y = grid_size -1
+            elif y > grid_size -1:
                 y = 0
-            neighbourscorrect.append([x,y])
+            neighbourscorrect.append((x,y))
+        neighbourscorrect.remove((new_pos[0], new_pos[1]))
         new_pos = random.choice(neighbourscorrect)
         dimers.append([(dimer[0][0], dimer[0][1]), new_pos])
-        t = t +1
+
 
             
             
@@ -101,7 +101,20 @@ dimers = [
 dimers = worm_algorithm(dimers, grid_size)
 for dimer in dimers:
     (x1, y1), (x2, y2) = dimer
-    plt.plot([x1, x2], [y1, y2], color="red", linewidth=3)
+    if x1 == 0 and x2 == grid_size - 1:
+        plt.plot([x1, -1], [y1, y2], color="red", linewidth=3)
+        plt.plot([grid_size , x2], [y1, y2], color="red", linewidth=3)
+    elif x1 == grid_size - 1 and x2 == 0:
+        plt.plot([x2, -1], [y2, y1], color="red", linewidth=3)
+        plt.plot([grid_size , x1], [y2, y1], color="red", linewidth=3)
+    elif y1 == 0 and y2 == grid_size - 1:
+         plt.plot([x1, x2], [y1, -1], color="red", linewidth=3)
+         plt.plot([x1, x2], [grid_size, y2], color="red", linewidth=3)
+    elif y1 ==  grid_size - 1 and y2 == 0:
+         plt.plot([x2, x1], [y2, -1], color="red", linewidth=3)
+         plt.plot([x2, x1], [grid_size, y1], color="red", linewidth=3)
+    else:
+        plt.plot([x1, x2], [y1, y2], color="red", linewidth=3)
 
 
 
