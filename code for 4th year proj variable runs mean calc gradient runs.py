@@ -135,9 +135,10 @@ Key:
     4 : down
 """
 
-run_values = np.arange(10, 2000, 100, dtype=int)
+run_values = np.linspace(10, 450, 430, dtype=int)
 final_means = []
 se_list = []
+std_list = []
 for runs in run_values:
     vdimercount = np.zeros(runs + 1)
     vdimercount[0] = np.count_nonzero(darray == 3)
@@ -187,19 +188,61 @@ for runs in run_values:
     standard_error = (std)/np.sqrt(len(meansplit))
     final_means = np.append(final_means, final_mean)
     se_list = np.append(se_list, standard_error)
+    std_list = np.append(std_list, std)
     
     print(f"Runs: {runs}, Mean: {final_mean}, Standard Error: {standard_error}")
+gradient, intercept = np.polyfit(np.log(run_values), np.log(se_list), 1)
+
+# Generate fitted values for plotting
+fitted_values = gradient * np.log(run_values) + intercept
+
+# Plot scatter and fitted line
 plt.figure(figsize=(8, 5))
-plt.plot(run_values, np.log(se_list))
+plt.scatter(np.log(run_values), np.log(se_list), color='blue', alpha=0.7, label="Data Points")
+plt.plot(np.log(run_values), fitted_values, color='red', label=f"Fitted Line: y={gradient:.4f}x + {intercept:.4f}")
+
+# Labels and title
+plt.xlabel("Log(Run Values)")
+plt.ylabel("Log(SE List)")
+plt.title("Linear Fit for Log(SE List) vs Log(Run Values)")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Print results
+print(f"Gradient: {gradient:.4f}")
+print(f"Intercept: {intercept:.4f}")
 
 plt.figure(figsize=(8, 5))
-plt.plot(run_values, se_list)
+
 
 
     
+#%%
+plt.figure(figsize=(8, 5))
 
+# Select every other point (50% of the data)
+sample_indices = np.arange(0, len(run_values), 5)  # Step of 2 selects half
 
+# Subsample data
+run_values_sampled = np.array(run_values)[sample_indices]
+final_means_sampled = np.array(final_means)[sample_indices]
+se_list_sampled = np.array(se_list)[sample_indices]
 
+# Improved error bars with dots
+plt.errorbar(run_values_sampled, final_means_sampled, se_list_sampled, 
+             fmt='o', capsize=5, capthick=2, 
+             elinewidth=1.5, marker='o', 
+             markersize=6, color='black', ecolor='green')
+
+# Reference line
+plt.axhline((grid_sizex * grid_sizey) / 4, color='red', linestyle='--')
+
+# Labels
+plt.xlabel('Number of runs')
+plt.ylabel('Mean')
+
+plt.show()
 
 
 
